@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     private Vector3 targetPosition;
     private float moveSpeed = 4f;
@@ -13,11 +13,9 @@ public class MoveAction : MonoBehaviour
     [SerializeField]
     private Animator unitAnimator;
 
-    private Unit unit;
-
-    private void Awake()
+    protected override void Awake()
     {
-        unit = GetComponent<Unit>();
+        base.Awake();
 
         // Avoid the unit move back to (0, 0, 0)
         targetPosition = transform.position;
@@ -25,20 +23,18 @@ public class MoveAction : MonoBehaviour
 
     private void Update()
     {
+        // Avoid multiple action happen at the same time
+        if (!isActive)
+        {
+            return;
+        }
+
         float stoppingDistance = .1f;
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
 
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
             transform.position += moveDirection * Time.deltaTime * moveSpeed;
-
-            // Rotate the character to the target with smoothing ease out
-            transform.forward = Vector3.Lerp(
-                transform.forward,
-                moveDirection,
-                Time.deltaTime * rotateSpeed
-            );
 
             // Add Walking animation to character
             unitAnimator.SetBool("isWalking", true);
@@ -47,7 +43,15 @@ public class MoveAction : MonoBehaviour
         {
             // Change back to Idle state
             unitAnimator.SetBool("isWalking", false);
+            isActive = false;
         }
+
+        // Rotate the character to the target with smoothing ease out
+        transform.forward = Vector3.Lerp(
+            transform.forward,
+            moveDirection,
+            Time.deltaTime * rotateSpeed
+        );
     }
 
     // public void Move(Vector3 targetPosition)
@@ -57,6 +61,8 @@ public class MoveAction : MonoBehaviour
 
     public void Move(GridPosition gridPosition)
     {
+        isActive = true;
+
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
     }
 
@@ -99,7 +105,6 @@ public class MoveAction : MonoBehaviour
                 }
 
                 validGridPositionList.Add(testGridPosition);
-                Debug.Log(testGridPosition);
             }
         }
 
