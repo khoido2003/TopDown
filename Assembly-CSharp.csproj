@@ -64,12 +64,14 @@
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\UnitSelectedVisual.cs" />
     <Compile Include="Assets\Scripts\Grid\Testing.cs" />
+    <Compile Include="Assets\Scripts\Grid\GridSystemVisualSingle.cs" />
     <Compile Include="Assets\Scripts\Grid\GridDebugObject.cs" />
     <Compile Include="Assets\Scripts\Grid\GridSystem.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\MouseWorld.cs" />
     <Compile Include="Assets\Scripts\MoveAction.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Grid\GridSystemVisual.cs" />
     <Compile Include="Assets\Scripts\Grid\GridPosition.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Grid\LevelGrid.cs" />
