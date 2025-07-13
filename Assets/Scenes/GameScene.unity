@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridDebugObjectPrefab: {fileID: 151069721368803486, guid: 4194c09cadb9ddc4e855c9a352bbb624, type: 3}
+  unit: {fileID: 2003646553}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +908,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit
       objectReference: {fileID: 0}
+    - target: {fileID: 4569729345783784337, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
+      propertyPath: maxMoveDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8696257219729766962, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1019,6 +1024,10 @@ PrefabInstance:
     - target: {fileID: 667482686747005702, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
       propertyPath: m_Name
       value: Unit (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4569729345783784337, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
+      propertyPath: maxMoveDistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8696257219729766962, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
       propertyPath: m_LocalPosition.x
