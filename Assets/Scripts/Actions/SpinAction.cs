@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpinAction : BaseAction
@@ -12,6 +13,10 @@ public class SpinAction : BaseAction
     // private Action onSpinComplete;
     // Built in delegate: Action, Func
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     private void Update()
     {
@@ -32,7 +37,22 @@ public class SpinAction : BaseAction
         }
     }
 
+    // Normal way
     public void Spin(Action onActionComplete)
+    {
+        this.onActionComplete = onActionComplete;
+        isActive = true;
+        totalSpintAmount = 0f;
+    }
+
+    public override List<GridPosition> GetValidActionGridPostionList()
+    {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+        return new List<GridPosition> { unitGridPosition };
+    }
+
+    // Generic way
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
         this.onActionComplete = onActionComplete;
         isActive = true;

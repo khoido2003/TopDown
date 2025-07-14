@@ -68,8 +68,21 @@ public class GridSystemVisual : MonoBehaviour
     {
         HideAllGridPosition();
 
-        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+        if (UnitActionSystem.Instance == null)
+        {
+            Debug.LogError("UnitActionSystem.Instance is NULL!");
+            return;
+        }
 
-        ShowGridPositionList(selectedUnit.GetMoveAction().GetValidActionGridPostionList());
+        BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedBaseAction();
+
+        if (selectedAction == null)
+        {
+            Debug.LogError("selectedBaseAction is NULL!");
+            return;
+        }
+
+        List<GridPosition> validList = selectedAction.GetValidActionGridPostionList();
+        ShowGridPositionList(validList);
     }
 }

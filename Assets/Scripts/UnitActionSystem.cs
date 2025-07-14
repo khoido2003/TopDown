@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitActionSystem : MonoBehaviour
 {
@@ -42,6 +43,13 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        // Prevent handling input if clicking over UI
+        // If mouse on UI element then not do any action
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (TryHandleUnitSelection())
         {
             return;
@@ -57,23 +65,30 @@ public class UnitActionSystem : MonoBehaviour
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(
                 MouseWorld.GetPosition()
             );
-            switch (selectedBaseAction)
+            if (selectedBaseAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                case MoveAction moveAction:
-                    // Check if the position is valid to move
-                    if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
-                    {
-                        SetIsBusy();
-                        selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearIsBusy);
-                    }
-                    break;
-
-                case SpinAction spinAction:
-
-                    SetIsBusy();
-                    spinAction.Spin(ClearIsBusy);
-                    break;
+                SetIsBusy();
+                selectedBaseAction.TakeAction(mouseGridPosition, ClearIsBusy);
             }
+
+            // // Withour generic code -> Use this
+            // switch (selectedBaseAction)
+            // {
+            //     case MoveAction moveAction:
+            //         // Check if the position is valid to move
+            //         if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+            //         {
+            //             SetIsBusy();
+            //             selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearIsBusy);
+            //         }
+            //         break;
+            //
+            //     case SpinAction spinAction:
+            //
+            //         SetIsBusy();
+            //         spinAction.Spin(ClearIsBusy);
+            //         break;
+            // }
         }
     }
 
@@ -89,6 +104,12 @@ public class UnitActionSystem : MonoBehaviour
 
                 if (unit != null)
                 {
+                    // Unit is already selected
+                    // Add this so click on the unit does not select unit but do the action instead
+                    if (unit == selectedUnit)
+                    {
+                        return false;
+                    }
                     SetSelectedUnit(unit);
                     return true;
                 }
@@ -109,7 +130,16 @@ public class UnitActionSystem : MonoBehaviour
 
     private void SetSelectedUnit(Unit unit)
     {
+        if (selectedUnit == unit)
+        {
+            SetSelectedAction(unit.GetMoveAction());
+
+            return;
+        }
+
         selectedUnit = unit;
+
+        // Set default action to Move
         SetSelectedAction(unit.GetMoveAction());
 
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
@@ -123,5 +153,10 @@ public class UnitActionSystem : MonoBehaviour
     public Unit GetSelectedUnit()
     {
         return selectedUnit;
+    }
+
+    public BaseAction GetSelectedBaseAction()
+    {
+        return selectedBaseAction;
     }
 }
