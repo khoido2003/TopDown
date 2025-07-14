@@ -1,8 +1,17 @@
+using System;
 using UnityEngine;
 
 public class SpinAction : BaseAction
 {
+    public delegate void SpinCompletedDelegate();
     private float totalSpintAmount = 0;
+
+    // Custom delegate
+    // private SpinCompletedDelegate onSpinComplete;
+
+    // private Action onSpinComplete;
+    // Built in delegate: Action, Func
+
 
     private void Update()
     {
@@ -17,12 +26,16 @@ public class SpinAction : BaseAction
         if (totalSpintAmount >= 360)
         {
             isActive = false;
-            totalSpintAmount = 0;
+
+            // Call the delegate function
+            this.onActionComplete();
         }
     }
 
-    public void Spin()
+    public void Spin(Action onActionComplete)
     {
+        this.onActionComplete = onActionComplete;
         isActive = true;
+        totalSpintAmount = 0f;
     }
 }

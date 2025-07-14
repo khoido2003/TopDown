@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +45,9 @@ public class MoveAction : BaseAction
             // Change back to Idle state
             unitAnimator.SetBool("isWalking", false);
             isActive = false;
+
+            // Calling delegate to when action stop
+            onActionComplete();
         }
 
         // Rotate the character to the target with smoothing ease out
@@ -59,11 +63,13 @@ public class MoveAction : BaseAction
     //     this.targetPosition = targetPosition;
     // }
 
-    public void Move(GridPosition gridPosition)
+    public void Move(GridPosition gridPosition, Action onActionComplete)
     {
         isActive = true;
 
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+        this.onActionComplete = onActionComplete;
     }
 
     public bool IsValidActionGridPosition(GridPosition gridPosition)

@@ -5,6 +5,8 @@ public class UnitActionSystem : MonoBehaviour
 {
     public static UnitActionSystem Instance { get; private set; }
 
+    private bool isBusy;
+
     [SerializeField]
     private Unit selectedUnit;
 
@@ -28,6 +30,11 @@ public class UnitActionSystem : MonoBehaviour
 
     private void Update()
     {
+        if (isBusy)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (TryHandleUnitSelection())
@@ -42,14 +49,26 @@ public class UnitActionSystem : MonoBehaviour
             // Check if the position is valid to move
             if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
             {
-                selectedUnit.GetMoveAction().Move(mouseGridPosition);
+                SetIsBusy();
+                selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearIsBusy);
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            selectedUnit.GetSpinAction().Spin();
+            SetIsBusy();
+            selectedUnit.GetSpinAction().Spin(ClearIsBusy);
         }
+    }
+
+    private void SetIsBusy()
+    {
+        isBusy = true;
+    }
+
+    private void ClearIsBusy()
+    {
+        isBusy = false;
     }
 
     private bool TryHandleUnitSelection()
