@@ -38,4 +38,9 @@ public class SpinAction : BaseAction
         isActive = true;
         totalSpintAmount = 0f;
     }
+
+    public override string GetActionName()
+    {
+        return "Spin";
+    }
 }

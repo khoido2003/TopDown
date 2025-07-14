@@ -14,6 +14,8 @@ public class MoveAction : BaseAction
     [SerializeField]
     private Animator unitAnimator;
 
+    public MoveAction() { }
+
     protected override void Awake()
     {
         base.Awake();
@@ -115,5 +117,10 @@ public class MoveAction : BaseAction
         }
 
         return validGridPositionList;
+    }
+
+    public override string GetActionName()
+    {
+        return "Move";
     }
 }
