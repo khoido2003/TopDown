@@ -22,6 +22,8 @@ public class UnitActionSystem : MonoBehaviour
 
     public event EventHandler<BusyActionArgs> OnBusyActionChanged;
 
+    public event EventHandler OnActionStarted;
+
     public class BusyActionArgs : EventArgs
     {
         public bool isBusy;
@@ -76,8 +78,14 @@ public class UnitActionSystem : MonoBehaviour
             );
             if (selectedBaseAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                SetIsBusy();
-                selectedBaseAction.TakeAction(mouseGridPosition, ClearIsBusy);
+                if (selectedUnit.TrySpendActionPointsToTakeAction(selectedBaseAction))
+                {
+                    SetIsBusy();
+
+                    selectedBaseAction.TakeAction(mouseGridPosition, ClearIsBusy);
+
+                    OnActionStarted?.Invoke(this, EventArgs.Empty);
+                }
             }
 
             // // Withour generic code -> Use this

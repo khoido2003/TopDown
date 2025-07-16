@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class UnitActionSystemUI : MonoBehaviour
 
     [SerializeField]
     private Transform actionButtonContainerTransform;
+
+    [SerializeField]
+    private TextMeshProUGUI actionPointsText;
 
     private List<ActionButtonUI> actionButtonUIList;
 
@@ -25,17 +29,30 @@ public class UnitActionSystemUI : MonoBehaviour
         UnitActionSystem.Instance.OnSelectedActionChanged +=
             UnitActionSystem_OnSelectedActionChanged;
 
+        UnitActionSystem.Instance.OnActionStarted += UnitActionSystem_OnActionStarted;
+
         CreateUnitActionButtons();
+        UpdateSelectedVisual();
+        UpdateActionPoints();
+    }
+
+    // Update action points UI when player spend on an action
+    private void UnitActionSystem_OnActionStarted(object sender, EventArgs e)
+    {
+        UpdateActionPoints();
     }
 
     private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
     {
-        CreateUnitActionButtons();
+        UpdateSelectedVisual();
     }
 
     private void UnitActionSystem_OnSelectedUnitChanged(object sender, EventArgs e)
     {
         CreateUnitActionButtons();
+        UpdateActionPoints();
+
+        UpdateSelectedVisual();
     }
 
     private void CreateUnitActionButtons()
@@ -64,8 +81,6 @@ public class UnitActionSystemUI : MonoBehaviour
 
             actionButtonUIList.Add(actionButtonUI);
         }
-
-        UpdateSelectedVisual();
     }
 
     private void UpdateSelectedVisual()
@@ -74,5 +89,26 @@ public class UnitActionSystemUI : MonoBehaviour
         {
             actionButtonUI.UpdateSelectedVisual();
         }
+    }
+
+    private void UpdateActionPoints()
+    {
+        Debug.Log($"UpdateActionPoints called on {gameObject.name}");
+
+        if (actionPointsText == null)
+        {
+            Debug.LogError("Action Points Text is not assigned in the inspector!");
+            return;
+        }
+
+        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+
+        if (selectedUnit == null)
+        {
+            actionPointsText.text = "Action Points: -";
+            return;
+        }
+
+        actionPointsText.text = "Action Points: " + selectedUnit.GetActionPoints();
     }
 }
