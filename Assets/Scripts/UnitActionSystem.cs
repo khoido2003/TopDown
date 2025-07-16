@@ -18,6 +18,15 @@ public class UnitActionSystem : MonoBehaviour
 
     public event EventHandler OnSelectedUnitChanged;
 
+    public event EventHandler OnSelectedActionChanged;
+
+    public event EventHandler<BusyActionArgs> OnBusyActionChanged;
+
+    public class BusyActionArgs : EventArgs
+    {
+        public bool isBusy;
+    }
+
     private void Awake()
     {
         if (Instance != null)
@@ -121,11 +130,14 @@ public class UnitActionSystem : MonoBehaviour
     private void SetIsBusy()
     {
         isBusy = true;
+        OnBusyActionChanged?.Invoke(this, new BusyActionArgs { isBusy = isBusy });
     }
 
     private void ClearIsBusy()
     {
         isBusy = false;
+
+        OnBusyActionChanged?.Invoke(this, new BusyActionArgs { isBusy = isBusy });
     }
 
     private void SetSelectedUnit(Unit unit)
@@ -148,6 +160,8 @@ public class UnitActionSystem : MonoBehaviour
     public void SetSelectedAction(BaseAction baseAction)
     {
         selectedBaseAction = baseAction;
+
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public Unit GetSelectedUnit()
