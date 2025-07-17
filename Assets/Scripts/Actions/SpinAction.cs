@@ -30,10 +30,7 @@ public class SpinAction : BaseAction
         totalSpintAmount += spinAddAmount;
         if (totalSpintAmount >= 360)
         {
-            isActive = false;
-
-            // Call the delegate function
-            this.onActionComplete();
+            ActionComplete();
         }
     }
 
@@ -54,8 +51,8 @@ public class SpinAction : BaseAction
     // Generic way
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this.onActionComplete = onActionComplete;
-        isActive = true;
+        ActionStart(onActionComplete);
+
         totalSpintAmount = 0f;
     }
 

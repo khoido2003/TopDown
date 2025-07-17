@@ -46,10 +46,8 @@ public class MoveAction : BaseAction
         {
             // Change back to Idle state
             unitAnimator.SetBool("isWalking", false);
-            isActive = false;
 
-            // Calling delegate to when action stop
-            onActionComplete();
+            ActionComplete();
         }
 
         // Rotate the character to the target with smoothing ease out
@@ -76,11 +74,8 @@ public class MoveAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        isActive = true;
-
+        ActionStart(onActionComplete);
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-
-        this.onActionComplete = onActionComplete;
     }
 
     // public bool IsValidActionGridPosition(GridPosition gridPosition)
