@@ -17,11 +17,8 @@ public class UnitActionSystem : MonoBehaviour
     private BaseAction selectedBaseAction;
 
     public event EventHandler OnSelectedUnitChanged;
-
     public event EventHandler OnSelectedActionChanged;
-
     public event EventHandler<BusyActionArgs> OnBusyActionChanged;
-
     public event EventHandler OnActionStarted;
 
     public class BusyActionArgs : EventArgs
@@ -50,6 +47,11 @@ public class UnitActionSystem : MonoBehaviour
     private void Update()
     {
         if (isBusy)
+        {
+            return;
+        }
+
+        if (!TurnSystem.Instance.GetIsPlayerTurn())
         {
             return;
         }
@@ -124,6 +126,11 @@ public class UnitActionSystem : MonoBehaviour
                     // Unit is already selected
                     // Add this so click on the unit does not select unit but do the action instead
                     if (unit == selectedUnit)
+                    {
+                        return false;
+                    }
+
+                    if (unit.GetIsEnemy())
                     {
                         return false;
                     }

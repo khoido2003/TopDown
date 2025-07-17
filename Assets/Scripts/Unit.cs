@@ -13,6 +13,9 @@ public class Unit : MonoBehaviour
 
     public static event EventHandler OnAnyActionPointsChanged;
 
+    [SerializeField]
+    private bool isEnemy;
+
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
@@ -95,13 +98,23 @@ public class Unit : MonoBehaviour
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
-        actionPoints = ACTION_POINT_MAX;
-
-        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+        if (
+            (GetIsEnemy() && !TurnSystem.Instance.GetIsPlayerTurn())
+            || (!GetIsEnemy() && TurnSystem.Instance.GetIsPlayerTurn())
+        )
+        {
+            actionPoints = ACTION_POINT_MAX;
+            OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public int GetActionPoints()
     {
         return actionPoints;
+    }
+
+    public bool GetIsEnemy()
+    {
+        return isEnemy;
     }
 }
