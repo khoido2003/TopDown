@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class MoveAction : BaseAction
 {
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
+
     private Vector3 targetPosition;
     private float moveSpeed = 4f;
     private float rotateSpeed = 10f;
 
     [SerializeField]
     private int maxMoveDistance = 4;
-
-    [SerializeField]
-    private Animator unitAnimator;
 
     public MoveAction() { }
 
@@ -38,14 +38,10 @@ public class MoveAction : BaseAction
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
             transform.position += moveDirection * Time.deltaTime * moveSpeed;
-
-            // Add Walking animation to character
-            unitAnimator.SetBool("isWalking", true);
         }
         else
         {
-            // Change back to Idle state
-            unitAnimator.SetBool("isWalking", false);
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
 
             ActionComplete();
         }
@@ -76,6 +72,8 @@ public class MoveAction : BaseAction
     {
         ActionStart(onActionComplete);
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
 
     // public bool IsValidActionGridPosition(GridPosition gridPosition)
