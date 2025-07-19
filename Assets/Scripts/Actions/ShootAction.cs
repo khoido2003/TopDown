@@ -82,7 +82,7 @@ public class ShootAction : BaseAction
             new OnShootEventArgs { targetUnit = targetUnit, shootingUnit = unit }
         );
 
-        targetUnit.Damage(100);
+        targetUnit.Damage(40);
     }
 
     private void NextState()
