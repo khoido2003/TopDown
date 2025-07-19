@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1159258973561789212, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
+      propertyPath: ragDollPrefab
+      value: 
+      objectReference: {fileID: 3132415388862934142, guid: e409d9b1ccf046e42b0c0dd8344dd4b8, type: 3}
     - target: {fileID: 5500519201223116872, guid: 4735423d651832849bcaa75e1c18989a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
