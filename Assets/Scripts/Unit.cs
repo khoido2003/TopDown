@@ -17,6 +17,9 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private bool isEnemy;
 
+    [SerializeField]
+    private Transform cameraActionPositionTransform;
+
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
@@ -135,5 +138,10 @@ public class Unit : MonoBehaviour
     public Vector3 GetWorldPosition()
     {
         return transform.position;
+    }
+
+    public Transform GetCameraActionPositionTransform()
+    {
+        return cameraActionPositionTransform;
     }
 }

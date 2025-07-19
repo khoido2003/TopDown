@@ -51,9 +51,8 @@ public class SpinAction : BaseAction
     // Generic way
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);
-
         totalSpintAmount = 0f;
+        ActionStart(onActionComplete);
     }
 
     public override string GetActionName()
