@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 22877519}
   - component: {fileID: 22877518}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,6 +964,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystemVisualSinglePrefab: {fileID: 7766281787813279072, guid: b22a014d69a2d9c4985db065b7eaa3fc, type: 3}
+  gridVisualTypeMaterialList:
+  - gridVisualType: 0
+    material: {fileID: 2100000, guid: 434f37e06ebdf47428ac1d33db45cdd1, type: 2}
+  - gridVisualType: 1
+    material: {fileID: 2100000, guid: bec4f09c96a508a46973f643023f19c3, type: 2}
+  - gridVisualType: 2
+    material: {fileID: 2100000, guid: aa05f35edfb6a4147977e89b7efce1f5, type: 2}
+  - gridVisualType: 3
+    material: {fileID: 2100000, guid: 8e581a2fc8243434e9a52b3ca001e03f, type: 2}
+  - gridVisualType: 4
+    material: {fileID: 2100000, guid: 2f69aa36094f4524f88ebe546b1bebf2, type: 2}
 --- !u!4 &558766518
 Transform:
   m_ObjectHideFlags: 0

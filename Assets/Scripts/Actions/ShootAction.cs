@@ -12,7 +12,7 @@ public class ShootAction : BaseAction
         public Unit shootingUnit;
     }
 
-    private int maxShootDistance = 7;
+    private int maxShootDistance = 5;
 
     private enum State
     {
@@ -172,5 +172,10 @@ public class ShootAction : BaseAction
     public Unit GetTargetUnit()
     {
         return targetUnit;
+    }
+
+    public int GetMaxShootDistance()
+    {
+        return maxShootDistance;
     }
 }

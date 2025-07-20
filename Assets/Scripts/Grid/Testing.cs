@@ -20,13 +20,13 @@ public class Testing : MonoBehaviour
     {
         // Debug.Log(gridSystem.GetGridPosition(MouseWorld.GetPosition()));
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GridSystemVisual.Instance.HideAllGridPosition();
-
-            GridSystemVisual.Instance.ShowGridPositionList(
-                unit.GetMoveAction().GetValidActionGridPostionList()
-            );
-        }
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     GridSystemVisual.Instance.HideAllGridPosition();
+        //
+        //     GridSystemVisual.Instance.ShowGridPositionList(
+        //         unit.GetMoveAction().GetValidActionGridPostionList()
+        //     );
+        // }
     }
 }

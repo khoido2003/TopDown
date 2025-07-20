@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,25 @@ public class GridSystemVisual : MonoBehaviour
     private GridSystemVisualSingle[,] gridSystemVisualSingleArray;
 
     public static GridSystemVisual Instance { get; private set; }
+
+    public enum GridVisualType
+    {
+        White,
+        Blue,
+        Red,
+        Yellow,
+        RedSoft,
+    }
+
+    [Serializable]
+    public struct GridVisualTypeMaterial
+    {
+        public GridVisualType gridVisualType;
+        public Material material;
+    }
+
+    [SerializeField]
+    private List<GridVisualTypeMaterial> gridVisualTypeMaterialList;
 
     private void Awake()
     {
@@ -38,12 +58,29 @@ public class GridSystemVisual : MonoBehaviour
                     gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
             }
         }
+
+        UnitActionSystem.Instance.OnSelectedActionChanged +=
+            UnitActionSystem_OnSelectedActionChanged;
+
+        LevelGrid.Instance.OnAnyUnitMoveGridPosition += LevelGrid_OnAnyUnitMoveGridPosition;
+
+        UpdateGridVisual();
     }
 
-    private void Update()
+    private void LevelGrid_OnAnyUnitMoveGridPosition(object sender, EventArgs e)
     {
         UpdateGridVisual();
     }
+
+    private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
+    {
+        UpdateGridVisual();
+    }
+
+    // private void Update()
+    // {
+    //     UpdateGridVisual();
+    // }
 
     public void HideAllGridPosition()
     {
@@ -56,12 +93,47 @@ public class GridSystemVisual : MonoBehaviour
         }
     }
 
-    public void ShowGridPositionList(List<GridPosition> gridPositionList)
+    public void ShowGridPositionList(
+        List<GridPosition> gridPositionList,
+        GridVisualType gridVisualType
+    )
     {
         foreach (GridPosition gridPosition in gridPositionList)
         {
-            gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show();
+            gridSystemVisualSingleArray[gridPosition.x, gridPosition.z]
+                .Show(GetGridVisualTypeMaterial(gridVisualType));
         }
+    }
+
+    private void ShowGridPositionRange(
+        GridPosition gridPosition,
+        int range,
+        GridVisualType gridVisualType
+    )
+    {
+        List<GridPosition> gridPositionList = new();
+        for (int x = -range; x <= range; x++)
+        {
+            for (int z = -range; z <= range; z++)
+            {
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+
+                if (!LevelGrid.Instance.IsValidPosition(testGridPosition))
+                {
+                    continue;
+                }
+
+                int testDistance = Math.Abs(x) + Math.Abs(z);
+                if (testDistance > range)
+                {
+                    continue;
+                }
+
+                gridPositionList.Add(testGridPosition);
+            }
+        }
+
+        ShowGridPositionList(gridPositionList, gridVisualType);
     }
 
     public void UpdateGridVisual()
@@ -74,6 +146,8 @@ public class GridSystemVisual : MonoBehaviour
             return;
         }
 
+        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+
         BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedBaseAction();
 
         if (selectedAction == null)
@@ -83,6 +157,41 @@ public class GridSystemVisual : MonoBehaviour
         }
 
         List<GridPosition> validList = selectedAction.GetValidActionGridPostionList();
-        ShowGridPositionList(validList);
+
+        GridVisualType gridVisualType;
+
+        switch (selectedAction)
+        {
+            default:
+            case MoveAction moveAction:
+                gridVisualType = GridVisualType.White;
+                break;
+            case SpinAction spinAction:
+                gridVisualType = GridVisualType.Blue;
+                break;
+            case ShootAction shootAction:
+                gridVisualType = GridVisualType.Red;
+
+                ShowGridPositionRange(
+                    selectedUnit.GetGridPosition(),
+                    shootAction.GetMaxShootDistance(),
+                    GridVisualType.RedSoft
+                );
+                break;
+        }
+        ShowGridPositionList(validList, gridVisualType);
+    }
+
+    private Material GetGridVisualTypeMaterial(GridVisualType gridVisualType)
+    {
+        foreach (GridVisualTypeMaterial gridVisualTypeMaterial in gridVisualTypeMaterialList)
+        {
+            if (gridVisualTypeMaterial.gridVisualType == gridVisualType)
+            {
+                return gridVisualTypeMaterial.material;
+            }
+        }
+        Debug.Log("Could not find Material for GridVisualType: " + gridVisualType);
+        return null;
     }
 }
