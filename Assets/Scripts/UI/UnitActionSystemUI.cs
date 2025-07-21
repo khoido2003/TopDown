@@ -107,8 +107,6 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private void UpdateActionPoints()
     {
-        Debug.Log($"UpdateActionPoints called on {gameObject.name}");
-
         if (actionPointsText == null)
         {
             Debug.LogError("Action Points Text is not assigned in the inspector!");
