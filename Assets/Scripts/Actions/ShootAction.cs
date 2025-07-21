@@ -45,7 +45,8 @@ public class ShootAction : BaseAction
             case State.Aiming:
 
                 float rotateSpeed = 10f;
-                Vector3 aimDir = targetUnit.GetWorldPosition().normalized;
+
+                Vector3 aimDir = (targetUnit.GetWorldPosition() - transform.position).normalized;
 
                 // Rotate the character to the target with smoothing ease out
                 transform.forward = Vector3.Lerp(
@@ -112,6 +113,12 @@ public class ShootAction : BaseAction
 
     public override List<GridPosition> GetValidActionGridPostionList()
     {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+        return GetValidActionGridPostionList(unitGridPosition);
+    }
+
+    public List<GridPosition> GetValidActionGridPostionList(GridPosition gridPosition)
+    {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
@@ -177,5 +184,21 @@ public class ShootAction : BaseAction
     public int GetMaxShootDistance()
     {
         return maxShootDistance;
+    }
+
+    public override EnemyActionAI GetEnemyActionAI(GridPosition gridPosition)
+    {
+        Unit targetUnit = LevelGrid.Instance.GetUnitOnGridPosition(gridPosition);
+
+        return new EnemyActionAI
+        {
+            gridPosition = gridPosition,
+            actionValue = 100 + Mathf.RoundToInt((1 - targetUnit.GetHealthNormalized()) * 100f),
+        };
+    }
+
+    public int GetTargetCountAtPosition(GridPosition gridPosition)
+    {
+        return GetValidActionGridPostionList(gridPosition).Count;
     }
 }

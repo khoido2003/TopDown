@@ -36,32 +36,32 @@ public class CameraManager : MonoBehaviour
                 Unit targetUnit = shootAction.GetTargetUnit();
                 Vector3 cameraCharacterHeight = Vector3.up * 1.7f;
 
-                // // Calculate dynamic
-                // Vector3 shootDir = (
-                //     targetUnit.GetWorldPosition() - shooterUnit.GetWorldPosition()
-                // ).normalized;
-                //
-                // float shoulderOffsetAmount = 0.5f;
-                // Vector3 shoulderOffset =
-                //     Quaternion.Euler(0, 90, 0) * shootDir * shoulderOffsetAmount;
-                //
-                // Vector3 actionCameraPosition =
-                //     shooterUnit.GetWorldPosition()
-                //     + cameraCharacterHeight
-                //     + shoulderOffset
-                //     + (shootDir * -1);
-                //
-                // actionCameraObject.transform.position = actionCameraPosition;
-                // actionCameraObject.transform.LookAt(
-                //     targetUnit.GetWorldPosition() + cameraCharacterHeight
-                // );
+                // Calculate dynamic
+                Vector3 shootDir = (
+                    targetUnit.GetWorldPosition() - shooterUnit.GetWorldPosition()
+                ).normalized;
 
-                Transform cameraActionTransform = shooterUnit.GetCameraActionPositionTransform();
+                float shoulderOffsetAmount = 1f;
+                Vector3 shoulderOffset =
+                    Quaternion.Euler(0, 90, 0) * shootDir * shoulderOffsetAmount;
 
-                actionCameraObject.transform.position = cameraActionTransform.position;
+                Vector3 actionCameraPosition =
+                    shooterUnit.GetWorldPosition()
+                    + cameraCharacterHeight
+                    + shoulderOffset
+                    + (shootDir * -1);
+
+                actionCameraObject.transform.position = actionCameraPosition;
                 actionCameraObject.transform.LookAt(
                     targetUnit.GetWorldPosition() + cameraCharacterHeight
                 );
+
+                // Transform cameraActionTransform = shooterUnit.GetCameraActionPositionTransform();
+                //
+                // actionCameraObject.transform.position = cameraActionTransform.position;
+                // actionCameraObject.transform.LookAt(
+                //     targetUnit.GetWorldPosition() + cameraCharacterHeight
+                // );
 
                 ShowActionCamera();
                 break;

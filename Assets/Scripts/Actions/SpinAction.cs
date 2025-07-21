@@ -64,4 +64,9 @@ public class SpinAction : BaseAction
     {
         return 1;
     }
+
+    public override EnemyActionAI GetEnemyActionAI(GridPosition gridPosition)
+    {
+        return new EnemyActionAI { gridPosition = gridPosition, actionValue = 0 };
+    }
 }

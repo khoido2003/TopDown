@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\Actions\ShootAction.cs" />
     <Compile Include="Assets\Scripts\Grid\GridSystemVisualSingle.cs" />
     <Compile Include="Assets\Scripts\Grid\GridDebugObject.cs" />
+    <Compile Include="Assets\Scripts\EnemyActionAI.cs" />
     <Compile Include="Assets\Scripts\Grid\GridSystem.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBusyUI.cs" />
