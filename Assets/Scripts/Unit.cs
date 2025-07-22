@@ -4,9 +4,10 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     private GridPosition gridPosition;
-    private MoveAction moveAction;
-    private SpinAction spinAction;
-    private ShootAction shootAction;
+
+    // private MoveAction moveAction;
+    // private SpinAction spinAction;
+    // private ShootAction shootAction;
     private BaseAction[] baseActionArray;
     private HealthSystem healthSystem;
 
@@ -25,10 +26,12 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        moveAction = GetComponent<MoveAction>();
-        spinAction = GetComponent<SpinAction>();
+        // moveAction = GetComponent<MoveAction>();
+        // spinAction = GetComponent<SpinAction>();
+        // shootAction = GetComponent<ShootAction>();
+
+
         baseActionArray = GetComponents<BaseAction>();
-        shootAction = GetComponent<ShootAction>();
         healthSystem = GetComponent<HealthSystem>();
     }
 
@@ -42,13 +45,6 @@ public class Unit : MonoBehaviour
         healthSystem.OnDead += HealthSystem_OnDead;
 
         OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void HealthSystem_OnDead(object sender, EventArgs e)
-    {
-        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
-        Destroy(gameObject);
-        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
@@ -65,15 +61,34 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public MoveAction GetMoveAction()
+    // Use generic to get action instead each method get each action
+    public T GetAction<T>()
+        where T : BaseAction
     {
-        return moveAction;
+        foreach (BaseAction baseAction in baseActionArray)
+        {
+            if (baseAction is T t)
+            {
+                return t;
+            }
+        }
+        return null;
     }
 
-    public SpinAction GetSpinAction()
-    {
-        return spinAction;
-    }
+    // public MoveAction GetMoveAction()
+    // {
+    //     return moveAction;
+    // }
+    //
+    // public SpinAction GetSpinAction()
+    // {
+    //     return spinAction;
+    // }
+    //
+    // public ShootAction GetShootAction()
+    // {
+    //     return shootAction;
+    // }
 
     public GridPosition GetGridPosition()
     {
@@ -129,6 +144,13 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void HealthSystem_OnDead(object sender, EventArgs e)
+    {
+        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+        Destroy(gameObject);
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
+    }
+
     public int GetActionPoints()
     {
         return actionPoints;
@@ -152,11 +174,6 @@ public class Unit : MonoBehaviour
     public Transform GetCameraActionPositionTransform()
     {
         return cameraActionPositionTransform;
-    }
-
-    public ShootAction GetShootAction()
-    {
-        return shootAction;
     }
 
     public float GetHealthNormalized()

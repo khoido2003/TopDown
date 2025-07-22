@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private GridSystem gridSystem;
+    private GridSystem<GridObject> gridSystem;
 
     [SerializeField]
     private Transform gridDebugObjectPrefab;
@@ -30,3 +30,14 @@ public class Testing : MonoBehaviour
         // }
     }
 }
+
+// public class MyClass<T>
+// {
+//     private T i;
+//
+//     public MyClass(T i)
+//     {
+//         this.i = i;
+//         Debug.Log(i);
+//     }
+// }

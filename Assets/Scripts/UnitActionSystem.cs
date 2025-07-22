@@ -159,7 +159,7 @@ public class UnitActionSystem : MonoBehaviour
     {
         if (selectedUnit == unit)
         {
-            SetSelectedAction(unit.GetMoveAction());
+            SetSelectedAction(unit.GetAction<MoveAction>());
 
             return;
         }
@@ -167,7 +167,7 @@ public class UnitActionSystem : MonoBehaviour
         selectedUnit = unit;
 
         // Set default action to Move
-        SetSelectedAction(unit.GetMoveAction());
+        SetSelectedAction(unit.GetAction<MoveAction>());
 
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
