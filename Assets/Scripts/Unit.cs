@@ -29,8 +29,6 @@ public class Unit : MonoBehaviour
         // moveAction = GetComponent<MoveAction>();
         // spinAction = GetComponent<SpinAction>();
         // shootAction = GetComponent<ShootAction>();
-
-
         baseActionArray = GetComponents<BaseAction>();
         healthSystem = GetComponent<HealthSystem>();
     }
